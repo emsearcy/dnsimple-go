@@ -195,8 +195,8 @@ func versioned(path string) string {
 	return fmt.Sprintf("/%s/%s", apiVersion, strings.Trim(path, "/"))
 }
 
-func (c *Client) get(path string, obj interface{}) (*http.Response, error) {
-	req, err := c.NewRequest("GET", path, nil)
+func (c *Client) get(ctx context.Context, path string, obj interface{}) (*http.Response, error) {
+	req, err := c.WithContext(ctx).NewRequest("GET", path, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -204,8 +204,8 @@ func (c *Client) get(path string, obj interface{}) (*http.Response, error) {
 	return c.Do(req, obj)
 }
 
-func (c *Client) post(path string, payload, obj interface{}) (*http.Response, error) {
-	req, err := c.NewRequest("POST", path, payload)
+func (c *Client) post(ctx context.Context, path string, payload, obj interface{}) (*http.Response, error) {
+	req, err := c.WithContext(ctx).NewRequest("POST", path, payload)
 	if err != nil {
 		return nil, err
 	}
@@ -213,8 +213,8 @@ func (c *Client) post(path string, payload, obj interface{}) (*http.Response, er
 	return c.Do(req, obj)
 }
 
-func (c *Client) put(path string, payload, obj interface{}) (*http.Response, error) {
-	req, err := c.NewRequest("PUT", path, payload)
+func (c *Client) put(ctx context.Context, path string, payload, obj interface{}) (*http.Response, error) {
+	req, err := c.WithContext(ctx).NewRequest("PUT", path, payload)
 	if err != nil {
 		return nil, err
 	}
@@ -222,8 +222,8 @@ func (c *Client) put(path string, payload, obj interface{}) (*http.Response, err
 	return c.Do(req, obj)
 }
 
-func (c *Client) patch(path string, payload, obj interface{}) (*http.Response, error) {
-	req, err := c.NewRequest("PATCH", path, payload)
+func (c *Client) patch(ctx context.Context, path string, payload, obj interface{}) (*http.Response, error) {
+	req, err := c.WithContext(ctx).NewRequest("PATCH", path, payload)
 	if err != nil {
 		return nil, err
 	}
@@ -231,8 +231,8 @@ func (c *Client) patch(path string, payload, obj interface{}) (*http.Response, e
 	return c.Do(req, obj)
 }
 
-func (c *Client) delete(path string, payload interface{}, obj interface{}) (*http.Response, error) {
-	req, err := c.NewRequest("DELETE", path, payload)
+func (c *Client) delete(ctx context.Context, path string, payload interface{}, obj interface{}) (*http.Response, error) {
+	req, err := c.WithContext(ctx).NewRequest("DELETE", path, payload)
 	if err != nil {
 		return nil, err
 	}

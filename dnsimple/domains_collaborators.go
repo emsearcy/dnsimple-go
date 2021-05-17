@@ -1,6 +1,7 @@
 package dnsimple
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -45,7 +46,7 @@ type collaboratorsResponse struct {
 // ListCollaborators list the collaborators for a domain.
 //
 // See https://developer.dnsimple.com/v2/domains/collaborators#list
-func (s *DomainsService) ListCollaborators(accountID, domainIdentifier string, options *ListOptions) (*collaboratorsResponse, error) {
+func (s *DomainsService) ListCollaborators(ctx context.Context, accountID, domainIdentifier string, options *ListOptions) (*collaboratorsResponse, error) {
 	path := versioned(collaboratorPath(accountID, domainIdentifier, 0))
 	collaboratorsResponse := &collaboratorsResponse{}
 
@@ -54,7 +55,7 @@ func (s *DomainsService) ListCollaborators(accountID, domainIdentifier string, o
 		return nil, err
 	}
 
-	resp, err := s.client.get(path, collaboratorsResponse)
+	resp, err := s.client.get(ctx, path, collaboratorsResponse)
 	if err != nil {
 		return collaboratorsResponse, err
 	}
@@ -66,11 +67,11 @@ func (s *DomainsService) ListCollaborators(accountID, domainIdentifier string, o
 // AddCollaborator adds a new collaborator to the domain in the account.
 //
 // See https://developer.dnsimple.com/v2/domains/collaborators#add
-func (s *DomainsService) AddCollaborator(accountID string, domainIdentifier string, attributes CollaboratorAttributes) (*collaboratorResponse, error) {
+func (s *DomainsService) AddCollaborator(ctx context.Context, accountID string, domainIdentifier string, attributes CollaboratorAttributes) (*collaboratorResponse, error) {
 	path := versioned(collaboratorPath(accountID, domainIdentifier, 0))
 	collaboratorResponse := &collaboratorResponse{}
 
-	resp, err := s.client.post(path, attributes, collaboratorResponse)
+	resp, err := s.client.post(ctx, path, attributes, collaboratorResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -82,11 +83,11 @@ func (s *DomainsService) AddCollaborator(accountID string, domainIdentifier stri
 // RemoveCollaborator PERMANENTLY deletes a domain from the account.
 //
 // See https://developer.dnsimple.com/v2/domains/collaborators#remove
-func (s *DomainsService) RemoveCollaborator(accountID string, domainIdentifier string, collaboratorID int64) (*collaboratorResponse, error) {
+func (s *DomainsService) RemoveCollaborator(ctx context.Context, accountID string, domainIdentifier string, collaboratorID int64) (*collaboratorResponse, error) {
 	path := versioned(collaboratorPath(accountID, domainIdentifier, collaboratorID))
 	collaboratorResponse := &collaboratorResponse{}
 
-	resp, err := s.client.delete(path, nil, nil)
+	resp, err := s.client.delete(ctx, path, nil, nil)
 	if err != nil {
 		return nil, err
 	}

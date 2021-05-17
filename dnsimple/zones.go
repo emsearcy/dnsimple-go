@@ -1,6 +1,7 @@
 package dnsimple
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -57,7 +58,7 @@ type ZoneListOptions struct {
 // ListZones the zones for an account.
 //
 // See https://developer.dnsimple.com/v2/zones/#list
-func (s *ZonesService) ListZones(accountID string, options *ZoneListOptions) (*zonesResponse, error) {
+func (s *ZonesService) ListZones(ctx context.Context, accountID string, options *ZoneListOptions) (*zonesResponse, error) {
 	path := versioned(fmt.Sprintf("/%v/zones", accountID))
 	zonesResponse := &zonesResponse{}
 
@@ -66,7 +67,7 @@ func (s *ZonesService) ListZones(accountID string, options *ZoneListOptions) (*z
 		return nil, err
 	}
 
-	resp, err := s.client.get(path, zonesResponse)
+	resp, err := s.client.get(ctx, path, zonesResponse)
 	if err != nil {
 		return zonesResponse, err
 	}
@@ -78,11 +79,11 @@ func (s *ZonesService) ListZones(accountID string, options *ZoneListOptions) (*z
 // GetZone fetches a zone.
 //
 // See https://developer.dnsimple.com/v2/zones/#get
-func (s *ZonesService) GetZone(accountID string, zoneName string) (*zoneResponse, error) {
+func (s *ZonesService) GetZone(ctx context.Context, accountID string, zoneName string) (*zoneResponse, error) {
 	path := versioned(fmt.Sprintf("/%v/zones/%v", accountID, zoneName))
 	zoneResponse := &zoneResponse{}
 
-	resp, err := s.client.get(path, zoneResponse)
+	resp, err := s.client.get(ctx, path, zoneResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -94,11 +95,11 @@ func (s *ZonesService) GetZone(accountID string, zoneName string) (*zoneResponse
 // GetZoneFile fetches a zone file.
 //
 // See https://developer.dnsimple.com/v2/zones/#get-file
-func (s *ZonesService) GetZoneFile(accountID string, zoneName string) (*zoneFileResponse, error) {
+func (s *ZonesService) GetZoneFile(ctx context.Context, accountID string, zoneName string) (*zoneFileResponse, error) {
 	path := versioned(fmt.Sprintf("/%v/zones/%v/file", accountID, zoneName))
 	zoneFileResponse := &zoneFileResponse{}
 
-	resp, err := s.client.get(path, zoneFileResponse)
+	resp, err := s.client.get(ctx, path, zoneFileResponse)
 	if err != nil {
 		return nil, err
 	}

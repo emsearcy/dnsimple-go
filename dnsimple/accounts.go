@@ -1,5 +1,7 @@
 package dnsimple
 
+import "context"
+
 type AccountsService struct {
 	client *Client
 }
@@ -22,7 +24,7 @@ type accountsResponse struct {
 // ListAccounts list the accounts for an user.
 //
 // See https://developer.dnsimple.com/v2/accounts/#list
-func (s *AccountsService) ListAccounts(options *ListOptions) (*accountsResponse, error) {
+func (s *AccountsService) ListAccounts(ctx context.Context, options *ListOptions) (*accountsResponse, error) {
 	path := versioned("/accounts")
 	accountsResponse := &accountsResponse{}
 
@@ -31,7 +33,7 @@ func (s *AccountsService) ListAccounts(options *ListOptions) (*accountsResponse,
 		return nil, err
 	}
 
-	resp, err := s.client.get(path, accountsResponse)
+	resp, err := s.client.get(ctx, path, accountsResponse)
 	if err != nil {
 		return accountsResponse, err
 	}

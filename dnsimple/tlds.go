@@ -1,6 +1,7 @@
 package dnsimple
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -66,7 +67,7 @@ type tldExtendedAttributesResponse struct {
 // ListTlds lists the supported TLDs.
 //
 // See https://developer.dnsimple.com/v2/tlds/#list
-func (s *TldsService) ListTlds(options *ListOptions) (*tldsResponse, error) {
+func (s *TldsService) ListTlds(ctx context.Context, options *ListOptions) (*tldsResponse, error) {
 	path := versioned("/tlds")
 	tldsResponse := &tldsResponse{}
 
@@ -75,7 +76,7 @@ func (s *TldsService) ListTlds(options *ListOptions) (*tldsResponse, error) {
 		return nil, err
 	}
 
-	resp, err := s.client.get(path, tldsResponse)
+	resp, err := s.client.get(ctx, path, tldsResponse)
 	if err != nil {
 		return tldsResponse, err
 	}
@@ -87,11 +88,11 @@ func (s *TldsService) ListTlds(options *ListOptions) (*tldsResponse, error) {
 // GetTld fetches a TLD.
 //
 // See https://developer.dnsimple.com/v2/tlds/#get
-func (s *TldsService) GetTld(tld string) (*tldResponse, error) {
+func (s *TldsService) GetTld(ctx context.Context, tld string) (*tldResponse, error) {
 	path := versioned(fmt.Sprintf("/tlds/%s", tld))
 	tldResponse := &tldResponse{}
 
-	resp, err := s.client.get(path, tldResponse)
+	resp, err := s.client.get(ctx, path, tldResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -103,11 +104,11 @@ func (s *TldsService) GetTld(tld string) (*tldResponse, error) {
 // GetTldExtendedAttributes fetches the extended attributes of a TLD.
 //
 // See https://developer.dnsimple.com/v2/tlds/#get
-func (s *TldsService) GetTldExtendedAttributes(tld string) (*tldExtendedAttributesResponse, error) {
+func (s *TldsService) GetTldExtendedAttributes(ctx context.Context, tld string) (*tldExtendedAttributesResponse, error) {
 	path := versioned(fmt.Sprintf("/tlds/%s/extended_attributes", tld))
 	tldResponse := &tldExtendedAttributesResponse{}
 
-	resp, err := s.client.get(path, tldResponse)
+	resp, err := s.client.get(ctx, path, tldResponse)
 	if err != nil {
 		return nil, err
 	}

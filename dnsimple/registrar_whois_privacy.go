@@ -1,6 +1,7 @@
 package dnsimple
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -41,11 +42,11 @@ type whoisPrivacyRenewalResponse struct {
 // GetWhoisPrivacy gets the whois privacy for the domain.
 //
 // See https://developer.dnsimple.com/v2/registrar/whois-privacy/#get
-func (s *RegistrarService) GetWhoisPrivacy(accountID string, domainName string) (*whoisPrivacyResponse, error) {
+func (s *RegistrarService) GetWhoisPrivacy(ctx context.Context, accountID string, domainName string) (*whoisPrivacyResponse, error) {
 	path := versioned(fmt.Sprintf("/%v/registrar/domains/%v/whois_privacy", accountID, domainName))
 	privacyResponse := &whoisPrivacyResponse{}
 
-	resp, err := s.client.get(path, privacyResponse)
+	resp, err := s.client.get(ctx, path, privacyResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -57,11 +58,11 @@ func (s *RegistrarService) GetWhoisPrivacy(accountID string, domainName string) 
 // EnableWhoisPrivacy enables the whois privacy for the domain.
 //
 // See https://developer.dnsimple.com/v2/registrar/whois-privacy/#enable
-func (s *RegistrarService) EnableWhoisPrivacy(accountID string, domainName string) (*whoisPrivacyResponse, error) {
+func (s *RegistrarService) EnableWhoisPrivacy(ctx context.Context, accountID string, domainName string) (*whoisPrivacyResponse, error) {
 	path := versioned(fmt.Sprintf("/%v/registrar/domains/%v/whois_privacy", accountID, domainName))
 	privacyResponse := &whoisPrivacyResponse{}
 
-	resp, err := s.client.put(path, nil, privacyResponse)
+	resp, err := s.client.put(ctx, path, nil, privacyResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -73,11 +74,11 @@ func (s *RegistrarService) EnableWhoisPrivacy(accountID string, domainName strin
 // DisableWhoisPrivacy disables the whois privacy for the domain.
 //
 // See https://developer.dnsimple.com/v2/registrar/whois-privacy/#enable
-func (s *RegistrarService) DisableWhoisPrivacy(accountID string, domainName string) (*whoisPrivacyResponse, error) {
+func (s *RegistrarService) DisableWhoisPrivacy(ctx context.Context, accountID string, domainName string) (*whoisPrivacyResponse, error) {
 	path := versioned(fmt.Sprintf("/%v/registrar/domains/%v/whois_privacy", accountID, domainName))
 	privacyResponse := &whoisPrivacyResponse{}
 
-	resp, err := s.client.delete(path, nil, privacyResponse)
+	resp, err := s.client.delete(ctx, path, nil, privacyResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -89,11 +90,11 @@ func (s *RegistrarService) DisableWhoisPrivacy(accountID string, domainName stri
 // RenewWhoisPrivacy renews the whois privacy for the domain.
 //
 // See https://developer.dnsimple.com/v2/registrar/whois-privacy/#renew
-func (s *RegistrarService) RenewWhoisPrivacy(accountID string, domainName string) (*whoisPrivacyRenewalResponse, error) {
+func (s *RegistrarService) RenewWhoisPrivacy(ctx context.Context, accountID string, domainName string) (*whoisPrivacyRenewalResponse, error) {
 	path := versioned(fmt.Sprintf("/%v/registrar/domains/%v/whois_privacy/renewals", accountID, domainName))
 	privacyRenewalResponse := &whoisPrivacyRenewalResponse{}
 
-	resp, err := s.client.post(path, nil, privacyRenewalResponse)
+	resp, err := s.client.post(ctx, path, nil, privacyRenewalResponse)
 	if err != nil {
 		return nil, err
 	}

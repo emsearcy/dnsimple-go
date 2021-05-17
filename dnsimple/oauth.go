@@ -1,6 +1,7 @@
 package dnsimple
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -64,10 +65,10 @@ func (r *ExchangeAuthorizationError) Error() string {
 
 // ExchangeAuthorizationForToken exchanges the short-lived authorization code for an access token
 // you can use to authenticate your API calls.
-func (s *OauthService) ExchangeAuthorizationForToken(authorization *ExchangeAuthorizationRequest) (*AccessToken, error) {
+func (s *OauthService) ExchangeAuthorizationForToken(ctx context.Context, authorization *ExchangeAuthorizationRequest) (*AccessToken, error) {
 	path := versioned("/oauth/access_token")
 
-	req, err := s.client.NewRequest("POST", path, authorization)
+	req, err := s.client.WithContext(ctx).NewRequest("POST", path, authorization)
 	if err != nil {
 		return nil, err
 	}

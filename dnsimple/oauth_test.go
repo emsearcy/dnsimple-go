@@ -1,6 +1,7 @@
 package dnsimple
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"reflect"
@@ -28,7 +29,7 @@ func TestOauthService_ExchangeAuthorizationForToken(t *testing.T) {
 		io.Copy(w, httpResponse.Body)
 	})
 
-	token, err := client.Oauth.ExchangeAuthorizationForToken(&ExchangeAuthorizationRequest{Code: code, ClientID: clientID, ClientSecret: clientSecret, GrantType: AuthorizationCodeGrant})
+	token, err := client.Oauth.ExchangeAuthorizationForToken(context.Background(), &ExchangeAuthorizationRequest{Code: code, ClientID: clientID, ClientSecret: clientSecret, GrantType: AuthorizationCodeGrant})
 	if err != nil {
 		t.Fatalf("Oauth.ExchangeAuthorizationForToken() returned error: %v", err)
 	}
@@ -50,7 +51,7 @@ func TestOauthService_ExchangeAuthorizationForToken_Error(t *testing.T) {
 		io.Copy(w, httpResponse.Body)
 	})
 
-	_, err := client.Oauth.ExchangeAuthorizationForToken(&ExchangeAuthorizationRequest{Code: "1234567890", ClientID: "a1b2c3", ClientSecret: "thisisasecret", GrantType: "authorization_code"})
+	_, err := client.Oauth.ExchangeAuthorizationForToken(context.Background(), &ExchangeAuthorizationRequest{Code: "1234567890", ClientID: "a1b2c3", ClientSecret: "thisisasecret", GrantType: "authorization_code"})
 	if err == nil {
 		t.Fatalf("Oauth.ExchangeAuthorizationForToken() expected to return an error")
 	}

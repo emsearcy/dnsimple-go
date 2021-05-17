@@ -1,6 +1,7 @@
 package dnsimple
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -35,11 +36,11 @@ type vanityNameServerResponse struct {
 // EnableVanityNameServers Vanity Name Servers for the given domain
 //
 // See https://developer.dnsimple.com/v2/vanity/#enable
-func (s *VanityNameServersService) EnableVanityNameServers(accountID string, domainIdentifier string) (*vanityNameServerResponse, error) {
+func (s *VanityNameServersService) EnableVanityNameServers(ctx context.Context, accountID string, domainIdentifier string) (*vanityNameServerResponse, error) {
 	path := versioned(vanityNameServerPath(accountID, domainIdentifier))
 	vanityNameServerResponse := &vanityNameServerResponse{}
 
-	resp, err := s.client.put(path, nil, vanityNameServerResponse)
+	resp, err := s.client.put(ctx, path, nil, vanityNameServerResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -51,11 +52,11 @@ func (s *VanityNameServersService) EnableVanityNameServers(accountID string, dom
 // DisableVanityNameServers Vanity Name Servers for the given domain
 //
 // See https://developer.dnsimple.com/v2/vanity/#disable
-func (s *VanityNameServersService) DisableVanityNameServers(accountID string, domainIdentifier string) (*vanityNameServerResponse, error) {
+func (s *VanityNameServersService) DisableVanityNameServers(ctx context.Context, accountID string, domainIdentifier string) (*vanityNameServerResponse, error) {
 	path := versioned(vanityNameServerPath(accountID, domainIdentifier))
 	vanityNameServerResponse := &vanityNameServerResponse{}
 
-	resp, err := s.client.delete(path, nil, nil)
+	resp, err := s.client.delete(ctx, path, nil, nil)
 	if err != nil {
 		return nil, err
 	}
