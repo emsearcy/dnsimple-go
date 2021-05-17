@@ -219,6 +219,38 @@ func (s *RegistrarService) TransferDomainOut(accountID string, domainName string
 	return transferResponse, nil
 }
 
+// GetDomainTransfer fetches a domain transfer.
+//
+// See https://developer.dnsimple.com/v2/registrar/#getDomainTransfer
+func (s *RegistrarService) GetDomainTransfer(accountID string, domainName string, domainTransferID int64) (*domainTransferResponse, error) {
+	path := versioned(fmt.Sprintf("/%v/registrar/domains/%v/transfers/%v", accountID, domainName, domainTransferID))
+	transferResponse := &domainTransferResponse{}
+
+	resp, err := s.client.get(path, transferResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	transferResponse.HttpResponse = resp
+	return transferResponse, nil
+}
+
+// CancelDomainTransfer cancels an in progress domain transfer.
+//
+// See https://developer.dnsimple.com/v2/registrar/#cancelDomainTransfer
+func (s *RegistrarService) CancelDomainTransfer(accountID string, domainName string, domainTransferID int64) (*domainTransferResponse, error) {
+	path := versioned(fmt.Sprintf("/%v/registrar/domains/%v/transfers/%v", accountID, domainName, domainTransferID))
+	transferResponse := &domainTransferResponse{}
+
+	resp, err := s.client.delete(path, nil, transferResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	transferResponse.HttpResponse = resp
+	return transferResponse, nil
+}
+
 // DomainRenewal represents the result of a domain renewal call.
 type DomainRenewal struct {
 	ID        int    `json:"id"`
