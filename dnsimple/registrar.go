@@ -1,6 +1,7 @@
 package dnsimple
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -211,6 +212,38 @@ func (s *RegistrarService) TransferDomainOut(accountID string, domainName string
 	transferResponse := &domainTransferOutResponse{}
 
 	resp, err := s.client.post(path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	transferResponse.HttpResponse = resp
+	return transferResponse, nil
+}
+
+// GetDomainTransfer fetches a domain transfer.
+//
+// See https://developer.dnsimple.com/v2/registrar/#getDomainTransfer
+func (s *RegistrarService) GetDomainTransfer(ctx context.Context, accountID string, domainName string, domainTransferID int64) (*domainTransferResponse, error) {
+	path := versioned(fmt.Sprintf("/%v/registrar/domains/%v/transfers/%v", accountID, domainName, domainTransferID))
+	transferResponse := &domainTransferResponse{}
+
+	resp, err := s.client.get(path, transferResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	transferResponse.HttpResponse = resp
+	return transferResponse, nil
+}
+
+// CancelDomainTransfer cancels an in progress domain transfer.
+//
+// See https://developer.dnsimple.com/v2/registrar/#cancelDomainTransfer
+func (s *RegistrarService) CancelDomainTransfer(ctx context.Context,  accountID string, domainName string, domainTransferID int64) (*domainTransferResponse, error) {
+	path := versioned(fmt.Sprintf("/%v/registrar/domains/%v/transfers/%v", accountID, domainName, domainTransferID))
+	transferResponse := &domainTransferResponse{}
+
+	resp, err := s.client.delete(path, nil, transferResponse)
 	if err != nil {
 		return nil, err
 	}
